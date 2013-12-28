@@ -1,0 +1,29 @@
+---
+- name: Upgrade apt packages
+  apt: upgrade=yes
+       update_cache=yes
+
+- name: Install Rainy prerequisites
+  apt: pkg={{ item }}
+  with_items:
+    - mono-complete
+    - libsqlite3-0
+    - screen
+    - unzip
+
+- name: Add the rainy user
+  user: name=rainy
+        home=/home/rainy
+        shell=/bin/bash
+        comment="Rainy User"
+
+- name: Download Rainy
+  get_url: url=https://github.com/Dynalon/Rainy/releases/download/0.5.1/rainy-0.5.0.zip
+           dest=/home/rainy
+           sha256sum=1fee4b2ce0ab80e0d869b2f55e6f9b37aeaa4e4123af353a92bf9422a5b83ca2
+
+- name: Extract the Rainy archive
+  command: unzip a09b23a0-458a-11e3-9751-a497ccdd5e8a.zip
+           chdir=/home/rainy
+  sudo: yes
+  sudo_user: rainy
