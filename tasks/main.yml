@@ -6,9 +6,8 @@
 - name: Install Rainy prerequisites
   apt: pkg={{ item }}
   with_items:
-    - mono-complete
     - libsqlite3-0
-    - screen
+    - mono-complete
     - unzip
 
 - name: Add the rainy user
@@ -18,12 +17,27 @@
         comment="Rainy User"
 
 - name: Download Rainy
-  get_url: url=https://github.com/Dynalon/Rainy/releases/download/0.5.1/rainy-0.5.0.zip
-           dest=/home/rainy
-           sha256sum=1fee4b2ce0ab80e0d869b2f55e6f9b37aeaa4e4123af353a92bf9422a5b83ca2
+  get_url: url={{ rainy_download_location }}
+           dest=/home/rainy/{{ rainy_archive_filename }}
+           sha256sum={{ rainy_checksum }}
 
 - name: Extract the Rainy archive
-  command: unzip a09b23a0-458a-11e3-9751-a497ccdd5e8a.zip
+  command: unzip {{ rainy_archive_filename }}
+           creates={{ rainy_location }}/Rainy.exe
            chdir=/home/rainy
   sudo: yes
   sudo_user: rainy
+
+- name: Set permissions on the Rainy directory
+  file: path={{ rainy_location }}
+        owner=rainy
+        group=rainy
+        mode=750
+        state=directory
+
+- name: Generate Rainy configuration file
+  template: src=settings.conf.j2
+            dest={{ rainy_location }}/settings.conf
+            owner=rainy
+            group=rainy
+            mode=640

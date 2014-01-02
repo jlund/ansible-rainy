@@ -1,0 +1,7 @@
+---
+rainy_listen_url: "https://*:8080/"
+rainy_data_path: "./data/"
+rainy_backend: "sqlite"
+rainy_allow_signup: "false"
+rainy_require_moderation: "true"
+rainy_development_features: "false"

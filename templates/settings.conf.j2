@@ -1,0 +1,43 @@
+# This file is basically JSON but allowes comment lines that 
+# start with the # character. Additionally, keys need not to be
+# enclosed by quotes.
+# Besides those exceptions this file MUST be valid JSON or the
+# program will fail.
+
+# Rainy configuration
+{
+	# the Url, containing IP address or hostname and port on which to listen
+	# if the wildcard "*" is used, we listen on all addresses
+	#
+	# If https is used, SSL certs will be created
+	# You can also use --cert/--pvk to specify your own generated
+	# certs created by the 'makecert' tool
+	#
+	# Note: The port is not optional but must be present for every url!
+	# 
+	ListenUrl: "{{ rainy_listen_url }}",
+	
+	# the path used for data storage (notes, metadata, ssl certs),
+	# must be writable.
+	# if empty, the current directory is used
+	DataPath: "{{ rainy_data_path }}",
+
+	# the backend to use, if empty the sqlite backend
+	# is used.
+	Backend: "{{ rainy_backend }}",
+
+	# password for the administration web interface
+	AdminPassword: "{{ rainy_admin_password }}",
+
+	# Multi-user configuration
+	#
+	# whether new users can signup
+	AllowSignup: {{ rainy_allow_signup }},
+
+	# required new signed up users to be activated by an administrator?
+	RequireModeration: {{ rainy_require_moderation }},
+
+	# Enables development features, only enable if you know what
+	# you are doing!
+	Development: {{ rainy_development_features }}
+}
